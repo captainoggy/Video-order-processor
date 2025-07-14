@@ -1,0 +1,35 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root
+  password: example
+  host: 127.0.0.1
+  port: 3306
+
+development:
+  <<: *default
+  database: wanderlust_development
+
+test:
+  <<: *default
+  database: wanderlust_test
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: wanderlust_production
+    username: wanderlust
+    password: <%= ENV["WANDERLUST_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: wanderlust_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: wanderlust_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: wanderlust_production_cable
+    migrations_paths: db/cable_migrate
