@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   post "sessions/switch_to_pm"
 
   resources :projects, only: [:index, :new, :create]
-  resources :notifications, only: [:index]
+  resources :notifications, only: [:index, :show]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

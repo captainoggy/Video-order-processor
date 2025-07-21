@@ -1,3 +1,6 @@
 .bg-primary.p-4.rounded-lg.border-l-4.border-accent-pink.shadow-md.flex.justify-between.items-center id=dom_id(notification)
-  p.text-text-primary= notification.message
+  = link_to notification_path(notification), class: 'flex items-center gap-2 w-full', style: 'text-decoration: none;' do
+    p.text-text-primary= notification.message
+    - unless notification.read
+      span.inline-block.bg-accent-green.text-white.text-xs.font-bold.px-2.py-1.rounded.ml-2 New
   .text-sm.text-text-secondary= "#{time_ago_in_words(notification.created_at)} ago"

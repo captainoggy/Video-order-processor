@@ -1,0 +1,12 @@
+h1.text-3xl.font-bold.text-accent-green.my-6 Notification
+
+.bg-primary.p-6.rounded-lg.border-2.border-secondary.shadow-md
+  .flex.items-center.gap-2.mb-4
+    p.text-text-primary= @notification.message
+    - if @notification.read?
+      span.inline-block.bg-gray-400.text-white.text-xs.font-bold.px-2.py-1.rounded.ml-2 Read
+    - else
+      span.inline-block.bg-accent-green.text-white.text-xs.font-bold.px-2.py-1.rounded.ml-2 New
+  .text-sm.text-text-secondary= "Received #{time_ago_in_words(@notification.created_at)} ago"
+
+= link_to 'Back to Notifications', notifications_path, class: 'mt-6 inline-block text-accent-blue hover:underline'

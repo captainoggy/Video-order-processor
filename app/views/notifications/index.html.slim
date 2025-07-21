@@ -1,6 +1,21 @@
 = turbo_stream_from "notifications.#{@current_pm.id}"
 h1.text-4xl.font-bold.text-accent-green.my-6 Notifications
 
+.bg-primary.p-6.rounded-lg.border-2.border-secondary.mb-8
+  = form_with url: notifications_path, method: :get, local: true do |form|
+    .grid.grid-cols-1.md:grid-cols-3.gap-6
+      .field
+        = form.label :keyword, "Message Keyword", class: "block text-lg font-medium text-text-secondary mb-2"
+        = form.text_field :keyword, value: params[:keyword], class: "mt-1 block w-full bg-secondary border-2 border-gray-600 rounded-md shadow-sm text-text-primary focus:border-accent-pink focus:ring focus:ring-accent-pink focus:ring-opacity-50"
+      .field
+        = form.label :start_date, "From", class: "block text-lg font-medium text-text-secondary mb-2"
+        = form.date_field :start_date, value: params[:start_date], class: "mt-1 block w-full bg-secondary border-2 border-gray-600 rounded-md shadow-sm text-text-primary focus:border-accent-green focus:ring focus:ring-accent-green focus:ring-opacity-50"
+      .field
+        = form.label :end_date, "To", class: "block text-lg font-medium text-text-secondary mb-2"
+        = form.date_field :end_date, value: params[:end_date], class: "mt-1 block w-full bg-secondary border-2 border-gray-600 rounded-md shadow-sm text-text-primary focus:border-accent-green focus:ring focus:ring-accent-green focus:ring-opacity-50"
+    .mt-6.flex.justify-end
+      = form.submit "Filter", class: "inline-block px-8 py-3 text-lg font-semibold text-white bg-accent-pink rounded-full shadow-md hover:bg-accent-blue hover:scale-105 transform transition-all duration-300 ease-in-out"
+
 #notifications.space-y-4
   = render @notifications
   - if @notifications.empty?

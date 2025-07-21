@@ -1,6 +1,11 @@
 class ProjectsController < ApplicationController
   def index
-    @pagy, @projects = pagy(@current_client.projects.order(created_at: :desc), items: 6)
+    @projects = @current_client.projects.order(created_at: :desc)
+    @projects = @projects.by_video_type(params[:video_type_id]) if params[:video_type_id].present?
+    @projects = @projects.by_price_range(params[:min_price], params[:max_price]) if params[:min_price].present? || params[:max_price].present?
+    @projects = @projects.by_creation_date_range(params[:start_date], params[:end_date]) if params[:start_date].present? || params[:end_date].present?
+
+    @pagy, @projects = pagy(@projects, items: 6)
   end
 
   def new
