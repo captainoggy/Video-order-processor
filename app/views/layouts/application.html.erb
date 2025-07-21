@@ -10,20 +10,62 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'background': '#0D0D0D', // Near black
+              'primary': '#1A1A1A',   // Very dark gray
+              'secondary': '#2A2A2A', // Dark gray
+              'accent': {
+                'blue': '#00BFFF',   // Deep sky blue
+                'pink': '#FF00FF',   // Magenta
+                'green': '#39FF14',  // Neon green
+              },
+              'text-primary': '#E0E0E0', // Light gray
+              'text-secondary': '#A0A0A0', // Medium gray
+            }
+          }
+        }
+      }
+    </script>
+
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <%= yield %>
-    <%= render_button "Button" %>
+  <body class="bg-background text-text-primary font-sans">
+    <header class="bg-primary border-b-2 border-accent-blue shadow-lg">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between py-4">
+          <a href="/" class="text-3xl font-bold text-text-primary hover:text-accent-pink transition-colors duration-300">Wanderlust</a>
+          <div class="flex items-center">
+            <div class="text-sm text-text-secondary mr-6">
+              Logged in as <%= @current_user.class.name %> #<%= @current_user.id %>
+            </div>
+            <nav class="flex items-center space-x-4">
+              <% if @current_user.is_a?(Client) %>
+                <%= button_to "Switch to PM", sessions_switch_to_pm_path, method: :post, class: "text-sm font-medium text-text-secondary hover:text-accent-green transition-colors duration-300" %>
+                <%= link_to "Order Project", new_project_path, class: "inline-block px-6 py-2 text-lg font-semibold text-white bg-accent-pink rounded-full shadow-md hover:bg-accent-blue hover:scale-105 transform transition-all duration-300 ease-in-out" %>
+              <% else %>
+                <%= button_to "Switch to Client", sessions_switch_to_client_path, method: :post, class: "text-sm font-medium text-text-secondary hover:text-accent-green transition-colors duration-300" %>
+                <%= link_to "Notifications", notifications_path, class: "inline-block px-6 py-2 text-lg font-semibold text-white bg-accent-blue rounded-full shadow-md hover:bg-accent-pink hover:scale-105 transform transition-all duration-300 ease-in-out" %>
+              <% end %>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+      <%# I'll need to style the flash messages later %>
+      <%# <%= render "layouts/flash" %>
+      <%= yield %>
+    </main>
   </body>
 </html>

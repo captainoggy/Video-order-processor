@@ -1,0 +1,8 @@
+= turbo_stream_from "notifications.#{@current_pm.id}"
+h1.text-4xl.font-bold.text-accent-green.my-6 Notifications
+
+#notifications.space-y-4
+  = render @notifications
+  - if @notifications.empty?
+    .bg-primary.p-8.rounded-lg.border-2.border-secondary.text-center
+      p.text-text-secondary No new notifications. You're all caught up!

@@ -1,0 +1,3 @@
+.bg-primary.p-4.rounded-lg.border-l-4.border-accent-pink.shadow-md.flex.justify-between.items-center id=dom_id(notification)
+  p.text-text-primary= notification.message
+  .text-sm.text-text-secondary= "#{time_ago_in_words(notification.created_at)} ago"

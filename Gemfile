@@ -64,6 +64,5 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "shadcn-ui", "~> 0.0.15"
-
 gem "slim-rails", "~> 3.7"
+gem "pagy", "~> 6.0"

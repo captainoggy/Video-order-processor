@@ -1,0 +1,7 @@
+.bg-primary.p-6.rounded-lg.border-2.border-secondary.hover:border-accent-green.transition-all.duration-300.transform.hover:-translate-y-1.shadow-lg
+  h2.text-2xl.font-bold.text-text-primary.mb-2= project.name
+  .flex.items-center.mb-4
+    span.text-sm.font-semibold.text-text-secondary.mr-2 Status:
+    span.px-3.py-1.text-sm.font-bold.rounded-full.bg-accent-blue.text-white= project.status
+  .text-sm.text-text-secondary
+    = "Created on #{project.created_at.strftime("%B %d, %Y")}"

@@ -1,6 +1,3 @@
-
-const shadcnConfig = require("./shadcn.tailwind.js")
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -13,23 +10,18 @@ module.exports = {
     './app/helpers/components/**/*.{rb,erb,html,slim}',
   ],
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+      colors: {
+        'background': '#0D0D0D', // Near black
+        'primary': '#1A1A1A',   // Very dark gray
+        'secondary': '#2A2A2A', // Dark gray
+        'accent': {
+          'blue': '#00BFFF',   // Deep sky blue
+          'pink': '#FF00FF',   // Magenta
+          'green': '#39FF14',  // Neon green
         },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
+        'text-primary': '#E0E0E0', // Light gray
+        'text-secondary': '#A0A0A0', // Medium gray
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -38,5 +30,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-  ...shadcnConfig
 }

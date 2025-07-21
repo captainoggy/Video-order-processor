@@ -1,0 +1,15 @@
+.rounded-lg.border.bg-card.text-card-foreground.shadow-sm class=tw("w-[350px]", options[:class])
+  - if title || subtitle
+    .flex.flex-col.space-y-1.5.p-6
+      - if title
+        h3.text-2xl.font-semibold.leading-none.tracking-tight = title
+      - if subtitle
+        p.text-sm.text-muted-foreground = subtitle
+  - if !block && !title
+    = content_tag( :div, class: "p-6" ){ body }
+  - elsif !block
+    = content_tag( :div, class: "px-6" ){ body }
+  - else
+    = body
+  - if footer
+    footer.mx-6.mb-6 = footer

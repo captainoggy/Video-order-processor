@@ -1,10 +1,20 @@
 class ApplicationController < ActionController::Base
-  before_action :set_current_client
+  include Pagy::Backend
+
+  before_action :set_current_user
 
   private
 
-  def set_current_client
-    # Simulate a logged-in client
-    @current_client = Client.first
+  def set_current_user
+    if session[:user_type] == "pm"
+      @current_pm = Pm.find_by(id: session[:user_id])
+      @current_user = @current_pm
+    else
+      # Default to client
+      @current_client = Client.find_by(id: session[:user_id]) || Client.first
+      session[:user_type] = :client
+      session[:user_id] ||= @current_client.id
+      @current_user = @current_client
+    end
   end
 end

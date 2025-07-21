@@ -1,0 +1,11 @@
+.my-6
+  h1.text-4xl.font-bold.text-accent-pink.mb-8 Projects
+
+= turbo_frame_tag "projects_list" do
+  .grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-3.gap-8
+    = render @projects
+
+  .mt-12
+    - if @pagy.pages > 1
+      nav.flex.items-center.justify-center.gap-x-4 aria-label="Page navigation"
+        == pagy_nav(@pagy)

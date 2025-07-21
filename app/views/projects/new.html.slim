@@ -1,0 +1,75 @@
+h1.text-4xl.font-bold.text-accent-pink.my-6.text-center Create Your Masterpiece
+
+= form_with(model: @project, url: projects_path, method: :post, html: { class: "space-y-12", data: { controller: "form", form_target: "form" } }) do |form|
+  - if @project.errors.any?
+    #error_explanation.bg-red-900.border.border-red-500.text-red-300.px-4.py-3.rounded-lg.relative.mb-8 role="alert"
+      h2.font-bold = pluralize(@project.errors.count, "error") + " needs your attention:"
+      ul.mt-2.list-disc.list-inside
+        - @project.errors.each do |error|
+          li = error.full_message
+
+  .bg-primary.p-8.rounded-lg.border-2.border-secondary
+    .space-y-6
+      .field
+        = form.label :name, "Project Name", class: "block text-lg font-medium text-text-secondary mb-2"
+        = form.text_field :name, required: true, class: "mt-1 block w-full bg-secondary border-2 border-gray-600 rounded-md shadow-sm text-text-primary focus:border-accent-pink focus:ring focus:ring-accent-pink focus:ring-opacity-50 focus-visible:outline-none focus-visible:ring-0 px-2 py-1"
+
+      .field
+        = form.label :footage_link, "Link to Your Footage", class: "block text-lg font-medium text-text-secondary mb-2"
+        = form.text_field :footage_link, required: true, class: "mt-1 block w-full bg-secondary border-2 border-gray-600 rounded-md shadow-sm text-text-primary focus:border-accent-blue focus:ring focus:ring-accent-blue focus:ring-opacity-50 focus-visible:outline-none focus-visible:ring-0 px-2 py-1"
+
+  h2.text-3xl.font-bold.my-6.text-center.text-accent-green Choose Your Edits
+  p.text-text-secondary.text-center.mb-8 Select the video types you want to order.
+
+  .grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-3.gap-6.mt-4
+    - @video_types.each do |video_type|
+      label.block.cursor-pointer
+        = check_box_tag "project[video_type_ids][]", video_type.id, false, class: 'hidden video-type-checkbox', 'data-price': video_type.price, 'data-action': 'change->form#updateTotal', 'data-form-target': 'checkbox'
+        .p-6.bg-primary.rounded-lg.border-2.border-secondary.transition-all.duration-200.hover:border-accent-pink.video-type-card
+          .flex.justify-between.items-center
+            .font-bold.text-xl.text-text-primary= video_type.name
+            .text-accent-blue.font-bold.text-lg= "$#{video_type.price}"
+          p.text-text-secondary.mt-2 A brief description of this amazing video type.
+
+  .my-12.flex.justify-between.items-center.p-6.bg-primary.rounded-lg.shadow-lg.border-2.border-accent-blue
+    h3.text-3xl.font-bold.text-white Total: $<span data-form-target="total">0.00</span>
+    button type="button" data-action="click->form#showModal" data-form-target="payButton" class="px-10 py-4 text-xl font-bold text-white bg-accent-pink rounded-full shadow-lg hover:bg-accent-green hover:scale-110 transform transition-all duration-300 ease-in-out"
+      | Finalize & Pay
+
+  #payment-modal.fixed.inset-0.bg-black.bg-opacity-75.flex.items-center.justify-center.hidden data-form-target="modal" data-action="click->form#closeOnOutsideClick"
+    .relative.mx-auto.p-8.border-2.border-accent-green.w-full.max-w-md.shadow-lg.rounded-lg.bg-primary
+      .text-center.mb-6
+        h3.text-2xl.leading-6.font-medium.text-accent-green Payment Details
+      .mt-4.space-y-6
+        div
+          label.block.text-sm.font-medium.text-text-secondary for="card_number" Card Number
+          input.mt-1.block.w-full.bg-secondary.border-2.border-gray-600.rounded-md.shadow-sm.text-text-primary.focus:border-accent-pink.focus:ring.focus:ring-accent-pink.focus:ring-opacity-50 type="text" id="card_number" placeholder="0000 0000 0000 0000"
+        .grid.grid-cols-3.gap-4
+          div
+            label.block.text-sm.font-medium.text-text-secondary for="expiry_date" Expiry
+            input.mt-1.block.w-full.bg-secondary.border-2.border-gray-600.rounded-md.shadow-sm.text-text-primary.focus:border-accent-pink.focus:ring.focus:ring-accent-pink.focus:ring-opacity-50 type="text" id="expiry_date" placeholder="MM/YY"
+          .col-span-2
+            label.block.text-sm.font-medium.text-text-secondary for="cvc" CVC
+            input.mt-1.block.w-full.bg-secondary.border-2.border-gray-600.rounded-md.shadow-sm.text-text-primary.focus:border-accent-pink.focus:ring.focus:ring-accent-pink.focus:ring-opacity-50 type="text" id="cvc" placeholder="123"
+      .mt-8
+        p.text-2xl.text-center.font-bold.text-white Total Due: $<span data-form-target="modalTotal">0.00</span>
+      .mt-6
+        = form.submit "Submit Project", class: "w-full px-8 py-4 text-xl font-bold text-white bg-accent-green rounded-full shadow-lg hover:bg-accent-pink hover:scale-105 transform transition-all duration-300 ease-in-out", "data-action": "click->form#submitForm"
+      .text-center.mt-4
+        button type="button" data-action="click->form#closeModal" data-form-target="cancelButton" class="text-sm text-text-secondary hover:text-accent-blue"
+          | Cancel
+
+javascript:
+  const checkboxes = document.querySelectorAll('.video-type-checkbox');
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', (event) => {
+      const card = event.target.closest('.video-type-card');
+      if (event.target.checked) {
+        card.classList.add('border-accent-green', 'scale-105');
+        card.classList.remove('border-secondary');
+      } else {
+        card.classList.remove('border-accent-green', 'scale-105');
+        card.classList.add('border-secondary');
+      }
+    });
+  });
