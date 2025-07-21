@@ -21,3 +21,8 @@ h1.text-4xl.font-bold.text-accent-green.my-6 Notifications
   - if @notifications.empty?
     .bg-primary.p-8.rounded-lg.border-2.border-secondary.text-center
       p.text-text-secondary No new notifications. You're all caught up!
+
+- if @pagy.pages > 1
+  .mt-12
+    nav.flex.items-center.justify-center.gap-x-4 aria-label="Page navigation"
+      == pagy_nav(@pagy)

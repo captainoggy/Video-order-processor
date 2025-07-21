@@ -19,14 +19,12 @@ class ProjectsController < ApplicationController
     @project.status = "In Progress"
 
     Project.transaction do
-      if @project.save
+      if @project.save!
         # Associate video types
-        video_type_ids = params[:project][:video_type_ids].reject(&:blank?)
-        @project.video_types = VideoType.find(video_type_ids)
-
+        video_type_ids = params[:project][:video_type_ids]&.reject(&:blank?)
+        @project.video_types = VideoType.where(id: video_type_ids)
         # Create notification for PM
         NotificationJob.perform_now(@project)
-
         redirect_to projects_path, notice: "Project was successfully created."
       else
         @video_types = VideoType.all

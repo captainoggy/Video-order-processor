@@ -18,4 +18,4 @@ class Project < ApplicationRecord
       joins(:video_types).group("projects.id").having("SUM(video_types.price) <= ?", max_price)
     end
   }
-end
+    end
