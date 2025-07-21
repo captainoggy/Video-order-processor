@@ -12,11 +12,21 @@ h1.text-4xl.font-bold.text-accent-pink.my-6.text-center Create Your Masterpiece
     .space-y-6
       .field
         = form.label :name, "Project Name", class: "block text-lg font-medium text-text-secondary mb-2"
-        = form.text_field :name, required: true, class: "mt-1 block w-full bg-secondary border-2 border-gray-600 rounded-md shadow-sm text-text-primary focus:border-accent-pink focus:ring focus:ring-accent-pink focus:ring-opacity-50 focus-visible:outline-none focus-visible:ring-0 px-2 py-1"
+        = form.text_field :name, required: true, maxlength: 255, class: "mt-1 block w-full bg-secondary border-2 border-gray-600 rounded-md shadow-sm text-text-primary focus:border-accent-pink focus:ring focus:ring-accent-pink focus:ring-opacity-50 focus-visible:outline-none focus-visible:ring-0 px-2 py-1"
+        - if @project.errors[:name].any?
+          p.text-red-500.text-xs.mt-1= @project.errors[:name].first
 
       .field
         = form.label :footage_link, "Link to Your Footage", class: "block text-lg font-medium text-text-secondary mb-2"
-        = form.text_field :footage_link, required: true, class: "mt-1 block w-full bg-secondary border-2 border-gray-600 rounded-md shadow-sm text-text-primary focus:border-accent-blue focus:ring focus:ring-accent-blue focus:ring-opacity-50 focus-visible:outline-none focus-visible:ring-0 px-2 py-1"
+        = form.text_field :footage_link, required: true, maxlength: 255, class: "mt-1 block w-full bg-secondary border-2 border-gray-600 rounded-md shadow-sm text-text-primary focus:border-accent-blue focus:ring focus:ring-accent-blue focus:ring-opacity-50 focus-visible:outline-none focus-visible:ring-0 px-2 py-1"
+        - if @project.errors[:footage_link].any?
+          p.text-red-500.text-xs.mt-1= @project.errors[:footage_link].first
+
+      .field
+        = form.label :status, "Project Status", class: "block text-lg font-medium text-text-secondary mb-2"
+        = form.text_field :status, required: true, maxlength: 255, value: @project.status || "In Progress", class: "mt-1 block w-full bg-secondary border-2 border-gray-600 rounded-md shadow-sm text-text-primary focus:border-accent-green focus:ring focus:ring-accent-green focus:ring-opacity-50 focus-visible:outline-none focus-visible:ring-0 px-2 py-1"
+        - if @project.errors[:status].any?
+          p.text-red-500.text-xs.mt-1= @project.errors[:status].first
 
   h2.text-3xl.font-bold.my-6.text-center.text-accent-green Choose Your Edits
   p.text-text-secondary.text-center.mb-8 Select the video types you want to order.
@@ -24,12 +34,14 @@ h1.text-4xl.font-bold.text-accent-pink.my-6.text-center Create Your Masterpiece
   .grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-3.gap-6.mt-4
     - @video_types.each do |video_type|
       label.block.cursor-pointer
-        = check_box_tag "project[video_type_ids][]", video_type.id, false, class: 'hidden video-type-checkbox', 'data-price': video_type.price, 'data-action': 'change->form#updateTotal', 'data-form-target': 'checkbox'
+        = check_box_tag "project[video_type_ids][]", video_type.id, false, class: 'hidden video-type-checkbox', 'data-price': video_type.price, 'data-action': 'change->form#updateTotal', 'data-form-target': 'checkbox', required: true
         .p-6.bg-primary.rounded-lg.border-2.border-secondary.transition-all.duration-200.hover:border-accent-pink.video-type-card
           .flex.justify-between.items-center
             .font-bold.text-xl.text-text-primary= video_type.name
             .text-accent-blue.font-bold.text-lg= "$#{video_type.price}"
           p.text-text-secondary.mt-2 A brief description of this amazing video type.
+  - if @project.errors[:video_type_ids].any?
+    p.text-red-500.text-xs.mt-1= @project.errors[:video_type_ids].first
 
   .my-12.flex.justify-between.items-center.p-6.bg-primary.rounded-lg.shadow-lg.border-2.border-accent-blue
     h3.text-3xl.font-bold.text-white Total: $<span data-form-target="total">0.00</span>
@@ -43,14 +55,14 @@ h1.text-4xl.font-bold.text-accent-pink.my-6.text-center Create Your Masterpiece
       .mt-4.space-y-6
         div
           label.block.text-sm.font-medium.text-text-secondary for="card_number" Card Number
-          input.mt-1.block.w-full.bg-secondary.border-2.border-gray-600.rounded-md.shadow-sm.text-text-primary.focus:border-accent-pink.focus:ring.focus:ring-accent-pink.focus:ring-opacity-50 type="text" id="card_number" placeholder="0000 0000 0000 0000"
+          input.mt-1.block.w-full.bg-secondary.border-2.border-gray-600.rounded-md.shadow-sm.text-text-primary.focus:border-accent-pink.focus:ring.focus:ring-accent-pink.focus:ring-opacity-50 type="text" id="card_number" placeholder="0000 0000 0000 0000" required=true pattern='\d{4} \d{4} \d{4} \d{4}' maxlength="19"
         .grid.grid-cols-3.gap-4
           div
             label.block.text-sm.font-medium.text-text-secondary for="expiry_date" Expiry
-            input.mt-1.block.w-full.bg-secondary.border-2.border-gray-600.rounded-md.shadow-sm.text-text-primary.focus:border-accent-pink.focus:ring.focus:ring-accent-pink.focus:ring-opacity-50 type="text" id="expiry_date" placeholder="MM/YY"
+            input.mt-1.block.w-full.bg-secondary.border-2.border-gray-600.rounded-md.shadow-sm.text-text-primary.focus:border-accent-pink.focus:ring.focus:ring-accent-pink.focus:ring-opacity-50 type="text" id="expiry_date" placeholder="MM/YY" required=true pattern='\d{2}/\d{2}' maxlength="5"
           .col-span-2
             label.block.text-sm.font-medium.text-text-secondary for="cvc" CVC
-            input.mt-1.block.w-full.bg-secondary.border-2.border-gray-600.rounded-md.shadow-sm.text-text-primary.focus:border-accent-pink.focus:ring.focus:ring-accent-pink.focus:ring-opacity-50 type="text" id="cvc" placeholder="123"
+            input.mt-1.block.w-full.bg-secondary.border-2.border-gray-600.rounded-md.shadow-sm.text-text-primary.focus:border-accent-pink.focus:ring.focus:ring-accent-pink.focus:ring-opacity-50 type="text" id="cvc" placeholder="123" required=true pattern='\d{3}' maxlength="3"
       .mt-8
         p.text-2xl.text-center.font-bold.text-white Total Due: $<span data-form-target="modalTotal">0.00</span>
       .mt-6

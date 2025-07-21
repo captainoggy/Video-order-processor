@@ -5,6 +5,17 @@ class Project < ApplicationRecord
   has_many :project_video_types
   has_many :video_types, through: :project_video_types
 
+  validates :name, presence: true
+  validates :footage_link, presence: true
+  validates :status, presence: true
+  validates :client, presence: true
+  validates :pm, presence: true
+  validate :must_have_at_least_one_video_type
+
+  def must_have_at_least_one_video_type
+    errors.add(:video_type_ids, "must select at least one video type") if video_types.empty?
+  end
+
   scope :by_video_type, ->(video_type_id) {
     joins(:video_types).where(video_types: { id: video_type_id }) if video_type_id.present?
   }

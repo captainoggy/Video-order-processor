@@ -18,18 +18,19 @@ class ProjectsController < ApplicationController
     @project.pm = Pm.first # Assign default PM
     @project.status = "In Progress"
 
-    Project.transaction do
-      if @project.save!
-        # Associate video types
-        video_type_ids = params[:project][:video_type_ids]&.reject(&:blank?)
-        @project.video_types = VideoType.where(id: video_type_ids)
+    video_type_ids = params[:project][:video_type_ids]&.reject(&:blank?) || []
+    @project.video_types = VideoType.where(id: video_type_ids)
+
+    if @project.valid?
+      Project.transaction do
+        @project.save!
         # Create notification for PM
         NotificationJob.perform_now(@project)
         redirect_to projects_path, notice: "Project was successfully created."
-      else
-        @video_types = VideoType.all
-        render :new, status: :unprocessable_entity
       end
+    else
+      @video_types = VideoType.all
+      render :new, status: :unprocessable_entity
     end
   end
 
