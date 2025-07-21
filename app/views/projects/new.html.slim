@@ -1,6 +1,6 @@
 h1.text-4xl.font-bold.text-accent-pink.my-6.text-center Create Your Masterpiece
 
-= form_with(model: @project, url: projects_path, method: :post, html: { class: "space-y-12", data: { controller: "form", form_target: "form" } }) do |form|
+= form_with(model: @project, url: projects_path, method: :post, html: { class: "space-y-12", data: { controller: "form", form_target: "form", turbo: "false" } }) do |form|
   - if @project.errors.any?
     #error_explanation.bg-red-900.border.border-red-500.text-red-300.px-4.py-3.rounded-lg.relative.mb-8 role="alert"
       h2.font-bold = pluralize(@project.errors.count, "error") + " needs your attention:"

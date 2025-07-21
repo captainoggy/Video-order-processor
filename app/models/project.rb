@@ -1,4 +1,5 @@
 class Project < ApplicationRecord
+  include Filterable
   belongs_to :client
   belongs_to :pm
   has_many :project_video_types
@@ -15,16 +16,6 @@ class Project < ApplicationRecord
       joins(:video_types).group("projects.id").having("SUM(video_types.price) >= ?", min_price)
     elsif max_price.present?
       joins(:video_types).group("projects.id").having("SUM(video_types.price) <= ?", max_price)
-    end
-  }
-
-  scope :by_creation_date_range, ->(start_date, end_date) {
-    if start_date.present? && end_date.present?
-      where(created_at: start_date..end_date)
-    elsif start_date.present?
-      where("created_at >= ?", start_date)
-    elsif end_date.present?
-      where("created_at <= ?", end_date)
     end
   }
 end

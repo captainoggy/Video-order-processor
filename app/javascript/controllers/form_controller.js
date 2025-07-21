@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { Turbo } from "@hotwired/turbo-rails"
 
 export default class extends Controller {
   static targets = ["checkbox", "total", "modalTotal", "modal", "payButton", "cancelButton", "form"]
@@ -35,7 +36,12 @@ export default class extends Controller {
     }
   }
 
-  submitForm() {
-    this.formTarget.submit()
+  submitForm(event) {
+    if (this.submitted) return;
+    this.submitted = true;
+    if (this.hasPayButtonTarget) {
+      this.payButtonTarget.disabled = true;
+    }
+    Turbo.navigator.submitForm(this.formTarget);
   }
 }
