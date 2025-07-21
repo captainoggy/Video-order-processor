@@ -16,7 +16,7 @@ class ProjectsController < ApplicationController
   def create
     @project = @current_client.projects.new(project_params)
     @project.pm = Pm.first # Assign default PM
-    @project.status = "In Progress"
+    @project.project_status = 0
 
     video_type_ids = params[:project][:video_type_ids]&.reject(&:blank?) || []
     @project.video_types = VideoType.where(id: video_type_ids)

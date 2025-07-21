@@ -10,24 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_21_192747) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_14_155511) do
   create_table "clients", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "notifications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "message"
+    t.string "message", null: false
     t.bigint "pm_id", null: false
+    t.boolean "read", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "read", default: false
     t.index ["pm_id"], name: "index_notifications_on_pm_id"
   end
 
   create_table "pms", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -42,9 +42,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_192747) do
   end
 
   create_table "projects", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.string "footage_link"
-    t.string "status"
+    t.string "name", null: false
+    t.string "footage_link", null: false
+    t.integer "project_status", default: 0, null: false
     t.bigint "client_id", null: false
     t.bigint "pm_id", null: false
     t.datetime "created_at", null: false
@@ -54,8 +54,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_192747) do
   end
 
   create_table "video_types", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.decimal "price", precision: 10, scale: 2
+    t.string "name", null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

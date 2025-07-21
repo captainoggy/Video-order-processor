@@ -1,13 +1,15 @@
 class Project < ApplicationRecord
   include Filterable
+
   belongs_to :client
   belongs_to :pm
   has_many :project_video_types
   has_many :video_types, through: :project_video_types
 
+  enum :project_status, { in_progress: 0, completed: 1, needs_review: 2, cancelled: 3 }
+
   validates :name, presence: true
   validates :footage_link, presence: true
-  validates :status, presence: true
   validates :client, presence: true
   validates :pm, presence: true
   validate :must_have_at_least_one_video_type
