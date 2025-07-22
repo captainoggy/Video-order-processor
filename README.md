@@ -66,6 +66,7 @@ bundle exec rspec
 - kamal, thruster, bootsnap, brakeman, rubocop-rails-omakase
 
 ## Assumptions & Future Improvements
+- **Default Users:** The app seeds with 1 default client and 1 default PM. A switch button is provided in development for demo/testing purposes. In a real production app, proper authentication, user management, and separation of roles would be required.
 - **UI/UX:** If more time, would further polish the UI, add more feedback, and improve accessibility.
 - **Validations:** Would add more advanced client-side validation (e.g., for payment modal) and custom error messages.
 - **Notifications:** Could be refactored for more types, batch actions, and user preferences.
