@@ -66,6 +66,6 @@ group :test do
 end
 
 gem "slim-rails", "~> 3.7"
-gem "pagy", "~> 6.0"
+gem "pagy", "~> 9.3"
 
 gem "rspec-rails", "~> 8.0"
