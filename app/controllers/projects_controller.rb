@@ -1,4 +1,6 @@
 class ProjectsController < ApplicationController
+  before_action :redirect_pm_to_notifications
+
   def index
     @projects = @current_client.projects.order(created_at: :desc)
     @projects = @projects.by_video_type(params[:video_type_id]) if params[:video_type_id].present?
@@ -38,5 +40,11 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:name, :footage_link)
+  end
+
+  def redirect_pm_to_notifications
+    if @current_user.is_a?(Pm)
+      redirect_to notifications_path, alert: "Project Managers are redirected to notifications."
+    end
   end
 end
